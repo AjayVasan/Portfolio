@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajay Vasan - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        /* Base Styles */
+        :root {
+            --bg-primary: #0a192f;
+            --bg-secondary: #112240;
+            --text-primary: #ccd6f6;
+            --text-secondary: #8892b0;
+            --accent: #64ffda;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            filter: brightness(1.2);
+        }
+        
+        .section {
+            padding: 6rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::after {
+            content: "";
+            height: 1px;
+            width: 200px;
+            background-color: var(--text-secondary);
+            margin-left: 1rem;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background-color: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+            transition: var(--transition);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-primary);
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 3rem;
+        }
+        
+        .hero-content {
+            max-width: 1700px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .hero-text {
+            max-width: 800px;
+        }
+        
+        .hero-greeting {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .hero-name {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .hero-tagline {
+            font-size: 2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .cta-button:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+        
+        .hero-image {
+            width: 660px;  /* Even larger size */
+            height: 480px;  /* Even larger size */
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent);  /* Slightly thicker border */
+            opacity: 0;
+            transform: translateY(20px);
+            margin-left: 2rem;
+            box-shadow: 0 15px 40px -10px rgba(2, 12, 27, 0.7);  /* Enhanced shadow */
+        }
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            grid-gap: 3rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 0.5rem;
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+        
+        .skills-list li {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+        }
+        
+        .skills-list li::before {
+            content: "▹";
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+        
+        .profile-pic {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border-radius: 4px;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1);
+            transition: var(--transition);
+            justify-self: center;
+        }
+        
+        .profile-pic:hover {
+            filter: none;
+        }
+        
+        .profile-pic::after {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            z-index: -1;
+            transition: var(--transition);
+        }
+        
+        .profile-pic:hover::after {
+            top: 15px;
+            left: 15px;
+        }
+        
+        .skills-chart-container {
+            width: 100%;
+            height: 350px;
+            margin-top: 2rem;
+            border-radius: 8px;
+            background-color: rgba(17, 34, 64, 0.5);
+            padding: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        /* Experience & Projects Section */
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-left: 2px solid var(--text-secondary);
+            transition: var(--transition);
+        }
+        
+        .tab-button.active {
+            color: var(--accent);
+            border-left: 2px solid var(--accent);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .job-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .job-company {
+            color: var(--accent);
+        }
+        
+        .job-duration {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .job-description ul {
+            list-style: none;
+        }
+        
+        .job-description li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+        
+        .job-description li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 2rem;
+        }
+        
+        .project-card {
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            padding: 2rem;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+        }
+        
+        .project-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .folder-icon {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+        
+        .project-links a {
+            margin-left: 1rem;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        
+        .project-links a:hover {
+            color: var(--accent);
+        }
+        
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+        }
+        
+        .project-tech li {
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Certifications Section */
+        .certifications {
+            padding: 6rem 0;
+        }
+        
+        .certifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 2rem;
+        }
+        
+        .certification-card {
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .certification-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+        }
+        
+        .certification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .certification-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .certification-issuer {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .certification-date {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .certification-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        /* Contact Section */
+        .contact {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .contact-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-text {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 2rem;
+        }
+        
+        .social-links li {
+            margin: 0 1rem;
+        }
+        
+        .social-links a {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .footer-link {
+            color: var(--accent);
+        }
+
+        /* CV Download Button */
+        .cv-button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-left: 1rem;
+            transition: var(--transition);
+        }
+        
+        .cv-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-title::after {
+                width: 100px;
+            }
+            
+            .hero-name {
+                font-size: 2.5rem;
+            }
+            
+            .hero-tagline {
+                font-size: 2rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-pic {
+                margin: 0 auto 2rem;
+                max-width: 250px;
+            }
+            
+            .skills-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .projects-grid, .certifications-grid {
+                grid-template-columns: 1fr;
+            }
+            /* Project Icons */
+            .project-icon {
+                font-size: 2rem;
+                margin-right: 1rem;
+                transition: transform 0.3s ease;
+            }
+
+            .project-icon:hover {
+                transform: scale(1.1);
+            }
+
+            /* Tech Tags */
+            .project-tech {
+                display: flex;
+                flex-wrap: wrap;
+                list-style: none;
+                margin-top: 1rem;
+                padding-left: 0;
+            }
+
+            .project-tech li {
+                padding: 0.25rem 0.75rem;
+                border-radius: 999px;
+                margin-right: 0.5rem;
+                margin-bottom: 0.5rem;
+                font-size: 0.8rem;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            /* Company Link Icon Styles */
+            .company-link-icon {
+                margin-left: 8px;
+                color: var(--text-secondary);
+                font-size: 0.8em;
+                transition: var(--transition);
+            }
+
+            .company-link-icon:hover {
+                color: var(--accent);
+                transform: translateY(-1px);
+            }
+
+            .job-company {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            /* If you want to add a tooltip */
+            .company-link-icon::after {
+                content: "View Certificate";
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 0.7rem;
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                white-space: nowrap;
+                pointer-events: none;
+            }
+
+            .company-link-icon:hover::after {
+                opacity: 1;
+            }
+
+            .project-tech li:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            
+            .hero-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .hero-image {
+                margin: 2rem 0 0 0;
+                align-self: center;
+            }
+            
+            .cv-button {
+                margin-left: 0;
+                margin-top: 1rem;
+                display: block;
+                width: 100%;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Progress bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            z-index: 101;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: var(--accent);
+            width: 0%;
+        }
+
+        /* Custom cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(100, 255, 218, 0.3);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            display: none;
+        }
+        
+        .cursor.active {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+        
+        @media (min-width: 1024px) {
+            .cursor {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">AV</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#certifications">Certifications</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p class="hero-greeting">Hi, my name is</p>
+                    <h1 class="hero-name">Ajay Vasan</h1>
+                    <!-- <h2 class="hero-tagline">I build intelligent systems.</h2> -->
+                    <h2 class="hero-tagline">Data Alchemy:      Transforming Noise into Strategic Insights.</h2>
+
+                    <p class="hero-description">I'm a Computer Science engineer specializing in Machine Learning, Data Science, and Cybersecurity. Currently focused on building secure and intelligent solutions for complex problems.</p>
+                    <div style="display: flex; flex-wrap: wrap;">
+                        <a href="#contact" class="cta-button">Get In Touch</a>
+                        <a href="AJ CV.pdf" download="Ajay_Vasan_CV.pdf" class="cta-button cv-button" target="_blank" rel="noopener noreferrer">Download CV</a>                    </div>
+                </div>
+                <img src="IMG20241101131332.jpg" alt="Ajay Vasan" class="hero-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hello I'm Ajay,  a Computer Science Engineering student with a passion for machine learning, data science, and cybersecurity. My journey in tech started with programming basics and evolved into developing intelligent systems that solve real-world problems.</p>
+                    <p>I'm currently pursuing my Bachelor's degree at Lovely Professional University, where I've been honing my skills in various programming languages and frameworks. My recent internship with IBM through Allsoft Solutions has further strengthened my understanding of cybersecurity fundamentals.</p>
+                    <p>Here are a few technologies I've been working with recently:</p>
+                    <ul class="skills-list">
+                        <li>Python</li>
+                        <li>Machine Learning</li>
+                        <li>Data Analysis</li>
+                        <li>Natural Language Processing</li>
+                        <li>Cybersecurity</li>
+                        <li>Java & Kotlin</li>
+                        <li>SQL & Vector Databases</li>
+                        <li>Network Security</li>
+                        <li>German (A1 Level)</li>
+                        <li>Data Visualization</li>
+                        <li>Bash Scripting</li>
+                        <li>Linux Administration</li>
+                    </ul>
+                </div>
+                <div class="skills-chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="section" id="experience">
+        <div class="container">
+            <h2 class="section-title">Where I've Worked</h2>
+            <div class="tabs">
+                <a href="https://www.allsoftsolutions.in/IBM/Main" target="_blank" rel="noopener noreferrer">
+                    <button class="tab-button active" data-tab="job1">Allsoft Solutions</button>
+                </a>            
+            </div>
+            <div class="tab-content active" id="job1">
+                <h3 class="job-title">Internship Trainee @ 
+                    <span class="job-company">
+                        Allsoft Solutions
+                        <a href="https://drive.google.com/file/d/1WgiUW39QhLCqp_rtPrO3fR-LpafbqbbD/view?usp=sharing" 
+                           target="_blank" rel="noopener noreferrer" class="company-link-icon">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </span>
+                </h3>           
+                <p class="job-duration">June 2024 - July 2024</p>
+                <div class="job-description">
+                    <ul>
+                        <li>Completed a 6-week IBM-affiliated intensive training in cybersecurity fundamentals, covering network security, system hardening, and threat detection.</li>
+                        <li>Gained practical experience in system administration, security configurations, and advanced network protocols under IBM's industry-standard methodologies.</li>
+                        <li>Developed a Honeypot security system using Python and Paramiko to detect unauthorized access, implemented multi-threaded sockets for real-time attack simulations.</li>
+                        <li>Worked with Python, Paramiko, Sockets, Threading, Virtual Machines, and Linux for system security implementations.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+        <div class="container">
+            <h2 class="section-title">Things I've Built</h2>
+            <div class="projects-grid">
+                <!-- Project 1 - Customer Segmentation -->
+                <div class="project-card fade-in">
+                    <div class="project-top">
+                        <i class="project-icon fas fa-user-friends" style="color: #1c75d4;"></i>
+                        <div class="project-links">
+                            <a href="https://github.com/AjayVasan/Customer-Segmentation" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="project-title">Customer Segmentation</h3>
+                    <p class="project-description">Segmented 200+ customer profiles using K-Means, Hierarchical Clustering, and DBSCAN, enabling businesses to identify high-value customer groups for personalized marketing.</p>
+                    <ul class="project-tech">
+                        <li style=" color: #4e79a7;">Python</li>
+                        <li style=" color: #f79d46;">Scikit-Learn</li>
+                        <li style="color: #4caf50;">Pandas</li>
+                        <li style=" color: #9c27b0;">K-Means</li>
+                        <li style="color: #f44336;">DBSCAN</li>
+                    </ul>
+                </div>
+
+                <!-- Project 2 - House Price Predictor -->
+                <div class="project-card fade-in">
+                    <div class="project-top">
+                        <i class="project-icon fas fa-home" style="color: #e15759;"></i>
+                        <div class="project-links">
+                            <a href="https://github.com/AjayVasan/Bangalore-House-Price-Prediction" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="project-title">Bangalore House Price Predictor</h3>
+                    <p class="project-description">Developed an advanced house pricing model by analyzing 13,000+ listings from MagicBricks, empowering data-driven real estate decisions.</p>
+                    <ul class="project-tech">
+                        <li style="color: #e15759;">Python</li>
+                        <li style="color: #ff9800;">Machine Learning</li>
+                        <li style="color: #795548;">Streamlit</li>
+                        <li style="color: #4caf50;">Pandas</li>
+                        <li style=" color: #f79d46;">Scikit-Learn</li>
+                    </ul>
+                </div>
+
+                <!-- Project 3 - Auction Verification -->
+                <div class="project-card fade-in">
+                    <div class="project-top">
+                        <i class="project-icon fas fa-gavel" style="color: #edc948;"></i>
+                        <div class="project-links">
+                            <a href="https://github.com/AjayVasan/Auction-Verification" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="project-title">Auction Verification</h3>
+                    <p class="project-description">Designed an advanced machine learning model that verified auction results with 98% reliability, detecting inconsistencies in data from Germany's 4G spectrum auctions.</p>
+                    <ul class="project-tech">
+                        <li style=" color: #edc948;">Python</li>
+                        <li style="color: #00bcd4;">Data Validation</li>
+                        <li style=" color: #673ab7;">Predictive Modeling</li>
+                        <li style="color: #4caf50;">Pandas</li>
+                        <li style=" color: #2196f3;">NumPy</li>
+                    </ul>
+                </div>
+
+                <!-- Project 4 - Honeypot Security -->
+                <div class="project-card fade-in">
+                    <div class="project-top">
+                        <i class="project-icon fas fa-shield-alt" style="color: #59a14f;"></i>
+                        <div class="project-links">
+                            <a href="https://github.com/AjayVasan/Honeypot" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="project-title">Honeypot Security System</h3>
+                    <p class="project-description">Developed an IBM-certified deceptive honeypot system, deploying fake HTTP and SSH services to attract and analyze 500+ unauthorized access attempts.</p>
+                    <ul class="project-tech">
+                        <li style="color: #59a14f;">Python</li>
+                        <li style="color: #009688;">Socket</li>
+                        <li style="color: #03a9f4;">Paramiko</li>
+                        <li style="color: #e91e63;">Threat Intelligence</li>
+                        <li style="color: #ff5722;">Intrusion Detection</li>
+                    </ul>
+                </div>
+
+                <!-- Project 5 - Discord Bot -->
+                <div class="project-card fade-in">
+                    <div class="project-top">
+                        <i class="project-icon fab fa-discord" style="color: #4164e0;"></i>
+                        <div class="project-links">
+                            <a href="https://github.com/AjayVasan/Discord_Bot" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="project-title">Discord Tech Companion</h3>
+                    <p class="project-description">Created a versatile Discord bot with moderation capabilities, custom commands, and interactive features to enhance community engagement and server management.</p>
+                    <ul class="project-tech">
+                        <li style="color: #7289da;">Python</li>
+                        <li style="color: #7289da;">Discord.py</li>
+                        <li style="color: #ffc107;">APIs</li>
+                        <li style="color: #4caf50;">Automation</li>
+                        <li style=" color: #9c27b0;">Bot Development</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="section" id="certifications">
+        <div class="container">
+            <h2 class="section-title">Certifications</h2>
+            <div class="certifications-grid">
+                <!-- Certification 1 -->
+                <div class="certification-card fade-in">
+                    <div class="certification-header">
+                        <div>
+                            <h3 class="certification-title">Cybersecurity Fundamentals</h3>
+                            <p class="certification-issuer">IBM</p>
+                            <p class="certification-date">Issued Jul 2024</p>
+                        </div>
+                    </div>
+                    <p>Completed intensive training in cybersecurity fundamentals covering network security, system hardening, and threat detection.</p>
+                    <a href="https://www.credly.com/badges/c4a11873-b585-4a7c-8c27-9b129319faba/public_url" target="_blank" class="certification-link">View Credential</a>
+                </div>
+                
+                <!-- Certification 2 -->
+                <div class="certification-card fade-in">
+                    <div class="certification-header">
+                        <div>
+                            <h3 class="certification-title">Programming Fundamentals in Kotlin</h3>
+                            <p class="certification-issuer">Meta</p>
+                            <p class="certification-date">Issued Dec 2024</p>
+                        </div>
+                    </div>
+                    <p>Mastered Kotlin programming fundamentals including object-oriented programming, data structures, and algorithms.</p>
+                    <a href="https://coursera.org/share/195c993e5451a6c273fbf40dcf683832" target="_blank" class="certification-link">View Credential</a>
+                </div>
+                
+                <!-- Certification 3 -->
+                <div class="certification-card fade-in">
+                    <div class="certification-header">
+                        <div>
+                            <h3 class="certification-title">German A1</h3>
+                            <p class="certification-issuer">Lovely Professional University</p>
+                            <p class="certification-date">Issued Apr 2025</p>
+                        </div>
+                    </div>
+                    <p>Certified in German language proficiency at A1 level, demonstrating basic communication skills in German.</p>
+                    <a href="https://www.linkedin.com/posts/ajay-vasan_german-a1-certificate-activity-7316348795896639488-w5AT?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD46oicBz6AIgLSL4h7s_wkPcEMbRNC1Fqc"
+                         target="_blank" class="certification-link">View Credential</a>
+                </div>
+                
+                <!-- Certification 4 -->
+                <div class="certification-card fade-in">
+                    <div class="certification-header">
+                        <div>
+                            <h3 class="certification-title">Generative AI for Everyone</h3>
+                            <p class="certification-issuer">DeepLearning.AI</p>
+                            <p class="certification-date">Issued Jan 2024</p>
+                        </div>
+                    </div>
+                    <p>Gained foundational knowledge in Generative AI, including LLMs, prompt engineering, and practical applications.</p>
+                    <a href="https://www.coursera.org/account/accomplishments/verify/L6TUULRV48WJ" target="_blank" class="certification-link">View Credential</a>
+                </div>
+                
+                <!-- Certification 5 -->
+                <div class="certification-card fade-in">
+                    <div class="certification-header">
+                        <div>
+                            <h3 class="certification-title">Algorithms on Strings</h3>
+                            <p class="certification-issuer">University of California San Diego</p>
+                            <p class="certification-date">Issued Feb 2024</p>
+                        </div>
+                    </div>
+                    <p>Learned advanced string processing algorithms including suffix trees, Burrows-Wheeler transform, and pattern matching.</p>
+                    <a href="https://www.coursera.org/account/accomplishments/verify/MT837JNP64L4" target="_blank" class="certification-link">View Credential</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="contact">
+                <h2 class="contact-title">Get In Touch</h2>
+                <p class="contact-text">I'm currently looking for new opportunities in Machine Learning, Data Science, or Cybersecurity. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+                <a href="mailto:mrajayvasan@gmail.com" class="cta-button">Say Hello</a>
+                <ul class="social-links">
+                    <li><a href="https://github.com/AjayVasan" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/ajay-vasan/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a></li>
+                    <li><a href="mailto:mrajayvasan@gmail.com"><i class="fas fa-envelope"></i></a></li>
+                    <li><a href="tel:+917548897996"><i class="fas fa-phone"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Designed & Built by Ajay Vasan</p>
+            <p>&copy; 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        // Progress Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        };
+
+        // Intersection Observer for sections
+        const sections = document.querySelectorAll('.section');
+        const options = {
+            threshold: 0.25,
+            rootMargin: "0px 0px -100px 0px"
+        };
+
+        const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, options);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const tabId = button.getAttribute('data-tab');
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Project cards animation
+        const projectCards = document.querySelectorAll('.project-card, .certification-card');
+        const projectObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        projectCards.forEach(card => {
+            projectObserver.observe(card);
+        });
+
+        // Hero section animation
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.querySelector('.hero-greeting').style.opacity = '1';
+                document.querySelector('.hero-greeting').style.transform = 'translateY(0)';
+                
+                setTimeout(() => {
+                    document.querySelector('.hero-name').style.opacity = '1';
+                    document.querySelector('.hero-name').style.transform = 'translateY(0)';
+                    
+                    setTimeout(() => {
+                        document.querySelector('.hero-tagline').style.opacity = '1';
+                        document.querySelector('.hero-tagline').style.transform = 'translateY(0)';
+                        
+                        setTimeout(() => {
+                            document.querySelector('.hero-description').style.opacity = '1';
+                            document.querySelector('.hero-description').style.transform = 'translateY(0)';
+                            
+                            setTimeout(() => {
+                                document.querySelectorAll('.cta-button').forEach(btn => {
+                                    btn.style.opacity = '1';
+                                    btn.style.transform = 'translateY(0)';
+                                });
+                                
+                                setTimeout(() => {
+                                    document.querySelector('.hero-image').style.opacity = '1';
+                                    document.querySelector('.hero-image').style.transform = 'translateY(0)';
+                                }, 200);
+                            }, 200);
+                        }, 200);
+                    }, 200);
+                }, 200);
+            }, 500);
+            
+            // Initialize the skills radar chart
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Python', 'Machine Learning', 'Data Analysis', 'Cybersecurity', 'Java/Kotlin', 'Algorithms'],
+                    datasets: [{
+                        label: 'Skill Level',
+                        data: [90, 86, 85, 78, 88, 79],
+                        backgroundColor: 'rgba(100, 255, 218, 0.2)',
+                        borderColor: 'rgba(100, 255, 218, 1)',
+                        pointBackgroundColor: 'rgba(100, 255, 218, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(100, 255, 218, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(136, 146, 176, 0.3)'
+                            },
+                            grid: {
+                                color: 'rgba(136, 146, 176, 0.3)'
+                            },
+                            pointLabels: {
+                                color: '#ccd6f6',
+                                font: {
+                                    size: 10
+                                }
+                            },
+                            ticks: {
+                                display: false,
+                                beginAtZero: true,
+                                max: 90,
+                                stepSize: 5
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.1
+                        }
+                    }
+                }
+            });
+        });
+
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('active');
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('active');
+        });
+
+        // Links hover effect for cursor
+        const links = document.querySelectorAll('a, button, .project-card, .certification-card');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
